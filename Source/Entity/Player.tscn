@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://ch2uynj0kh3ya"]
+
+[ext_resource type="Script" uid="uid://ciasint1ymy7j" path="res://Source/Entity/PlayerComponent.cs" id="2_yb88c"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xp3p0"]
+
+[node name="Player" type="CharacterBody3D" unique_id=676746881]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1591185566]
+shape = SubResource("CapsuleShape3D_xp3p0")
+
+[node name="PlayerComponent" type="Node3D" parent="." unique_id=353437392]
+script = ExtResource("2_yb88c")
+metadata/_custom_type_script = "uid://ciasint1ymy7j"
