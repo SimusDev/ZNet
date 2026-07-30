@@ -1,0 +1,112 @@
+[gd_scene format=3 uid="uid://pkaps72cs3ew"]
+
+[ext_resource type="Script" uid="uid://fnorkteslqjq" path="res://addons/ZNet/Tests/Chat.cs" id="1_phnx8"]
+[ext_resource type="PackedScene" uid="uid://c5jkk0qed3w8w" path="res://addons/ZNet/Debug/SimpleProfiler.tscn" id="2_phnx8"]
+
+[node name="Chat" type="Node" unique_id=1377542088 node_paths=PackedStringArray("_lobbyLayer", "_chatLayer", "_usernameLine", "_addressLine", "_portLine", "_createServerButton", "_createClientButton", "_chatWindow", "_messageEnter", "_timer")]
+script = ExtResource("1_phnx8")
+_lobbyLayer = NodePath("Lobby")
+_chatLayer = NodePath("Chat")
+_usernameLine = NodePath("Lobby/Panel/VBoxContainer/UserName")
+_addressLine = NodePath("Lobby/Panel/VBoxContainer/Address")
+_portLine = NodePath("Lobby/Panel/VBoxContainer/Port")
+_createServerButton = NodePath("Lobby/Panel/VBoxContainer/CreateServer")
+_createClientButton = NodePath("Lobby/Panel/VBoxContainer/CreateClient")
+_chatWindow = NodePath("Chat/Panel/ChatWindow")
+_messageEnter = NodePath("Chat/Panel/MessageEnter")
+_timer = NodePath("Chat/Timer")
+
+[node name="SimpleProfiler" parent="." unique_id=1079228655 instance=ExtResource("2_phnx8")]
+
+[node name="Lobby" type="CanvasLayer" parent="." unique_id=206344741]
+visible = false
+
+[node name="Panel" type="Panel" parent="Lobby" unique_id=69384264]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -273.5
+offset_top = -181.25
+offset_right = 273.5
+offset_bottom = 181.25
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Lobby/Panel" unique_id=547835805]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="UserName" type="LineEdit" parent="Lobby/Panel/VBoxContainer" unique_id=45732458]
+layout_mode = 2
+text = "UserName"
+placeholder_text = "UserName"
+alignment = 1
+
+[node name="Address" type="LineEdit" parent="Lobby/Panel/VBoxContainer" unique_id=831360660]
+layout_mode = 2
+text = "localhost"
+placeholder_text = "Address"
+alignment = 1
+
+[node name="Port" type="LineEdit" parent="Lobby/Panel/VBoxContainer" unique_id=1776565557]
+layout_mode = 2
+text = "8080"
+placeholder_text = "Port"
+alignment = 1
+
+[node name="CreateServer" type="Button" parent="Lobby/Panel/VBoxContainer" unique_id=1654370613]
+layout_mode = 2
+text = "Create Server"
+
+[node name="CreateClient" type="Button" parent="Lobby/Panel/VBoxContainer" unique_id=858186816]
+layout_mode = 2
+text = "Create Client"
+
+[node name="Chat" type="CanvasLayer" parent="." unique_id=885817243]
+visible = false
+
+[node name="Panel" type="Panel" parent="Chat" unique_id=741510629]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -273.5
+offset_top = -181.25
+offset_right = 273.5
+offset_bottom = 181.25
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChatWindow" type="RichTextLabel" parent="Chat/Panel" unique_id=1890460151]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.018000001
+anchor_top = 0.014
+anchor_right = 0.984
+anchor_bottom = 0.98
+offset_left = 0.15399933
+offset_top = -0.075000286
+offset_right = 0.2672119
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MessageEnter" type="LineEdit" parent="Chat/Panel" unique_id=785708926]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.90000004
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "Enter Message..."
+
+[node name="Timer" type="Timer" parent="Chat" unique_id=1970357721]
+wait_time = 0.00999999999999999

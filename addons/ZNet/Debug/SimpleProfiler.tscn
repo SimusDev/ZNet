@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://c5jkk0qed3w8w"]
+
+[ext_resource type="Script" uid="uid://dtn4xrfaboiyg" path="res://addons/ZNet/Debug/SimpleProfiler.cs" id="1_8kaa0"]
+
+[node name="SimpleProfiler" type="Control" unique_id=1079228655 node_paths=PackedStringArray("_label")]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -464.0
+offset_top = -137.0
+offset_right = -9.0
+offset_bottom = -9.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+script = ExtResource("1_8kaa0")
+_label = NodePath("Label")
+
+[node name="Label" type="Label" parent="." unique_id=303711404]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 2
+vertical_alignment = 2

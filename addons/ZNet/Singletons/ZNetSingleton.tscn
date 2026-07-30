@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dyd7rkyxsb8f2"]
+
+[ext_resource type="Script" uid="uid://ddh7op3t8al3j" path="res://addons/ZNet/ZNetMultiplayer.cs" id="1_s5crm"]
+
+[node name="ZNetSingleton" type="Node" unique_id=332735803]
+script = ExtResource("1_s5crm")
+metadata/_custom_type_script = "uid://ddh7op3t8al3j"
