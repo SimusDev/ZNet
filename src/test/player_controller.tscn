@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://cgcbm6kr3g40a"]
+
+[ext_resource type="Script" uid="uid://df0wgpe7t7n5x" path="res://addons/ArmaMovement/PlayerController.cs" id="1_k8pu1"]
+[ext_resource type="Script" uid="uid://b0nim6b5qabfn" path="res://addons/ArmaMovement/PlayerInput.cs" id="2_dqyc2"]
+[ext_resource type="Script" uid="uid://c4xi85isxv0ya" path="res://addons/ArmaMovement/PlayerMovement.cs" id="3_ib165"]
+[ext_resource type="Script" uid="uid://c3o42osw2eurm" path="res://addons/ArmaMovement/PlayerStateMachine.cs" id="4_mp68b"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sx3cy"]
+
+[node name="PlayerController" type="Node3D" unique_id=252121785 node_paths=PackedStringArray("CharacterBody", "BodyMesh", "Camera", "PlayerInput", "PlayerMovement", "StateMachine", "Animation")]
+script = ExtResource("1_k8pu1")
+CharacterBody = NodePath("CharacterBody3D")
+BodyMesh = NodePath("Node3D")
+Camera = NodePath("Camera3D")
+PlayerInput = NodePath("PlayerInput")
+PlayerMovement = NodePath("PlayerMovement")
+StateMachine = NodePath("PlayerStateMachine")
+Animation = NodePath("AnimationPlayer")
+metadata/_custom_type_script = "uid://df0wgpe7t7n5x"
+
+[node name="PlayerInput" type="Node" parent="." unique_id=1862034831]
+script = ExtResource("2_dqyc2")
+metadata/_custom_type_script = "uid://b0nim6b5qabfn"
+
+[node name="PlayerMovement" type="Node" parent="." unique_id=489234275]
+script = ExtResource("3_ib165")
+metadata/_custom_type_script = "uid://c4xi85isxv0ya"
+
+[node name="PlayerStateMachine" type="Node" parent="." unique_id=1410562977]
+script = ExtResource("4_mp68b")
+PlayerControllerPath = NodePath("..")
+metadata/_custom_type_script = "uid://c3o42osw2eurm"
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=834176786]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=1915070649]
+shape = SubResource("CapsuleShape3D_sx3cy")
+
+[node name="Node3D" type="Node3D" parent="." unique_id=965133727]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2029680686]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=638749099]
