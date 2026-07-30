@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://01q7qsgt55qs"]
+
+[ext_resource type="Script" uid="uid://biv5q0mfaen7m" path="res://Scripts/World/ChunkDebugInfo.cs" id="1_71sis"]
+
+[node name="ChunkDebugInfo" type="Label3D" unique_id=1277508656]
+billboard = 1
+text = "Chunk"
+script = ExtResource("1_71sis")

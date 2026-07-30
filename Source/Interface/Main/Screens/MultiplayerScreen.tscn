@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://hk2gbelox6be"]
+
+[ext_resource type="Script" uid="uid://cnhjuc80aw1dh" path="res://Source/Interface/Main/Screens/MultiplayerScreen.cs" id="1_e4gv4"]
+
+[node name="MultiplayerScreen" type="Control" unique_id=1149304225]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_e4gv4")

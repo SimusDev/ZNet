@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://h8ghkj0t620s"]
+
+[ext_resource type="Script" uid="uid://d35e0mrybqs8r" path="res://addons/ZNet/Prototyping/Components/PropertySynchronizer.cs" id="1_wceqg"]
+
+[node name="PropertySynchronizer" type="Node" unique_id=955401790]
+script = ExtResource("1_wceqg")

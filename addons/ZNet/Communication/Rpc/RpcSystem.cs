@@ -91,6 +91,11 @@ namespace ZNet.Communication.Rpc
             }
         }
 
+        public bool TryGetDelegateConfig(Delegate @delegate, out RpcConfig config)
+        {
+            return _delegateToConfig.TryGetValue(@delegate, out config);
+        }
+
         public void BindDelegate(Delegate @delegate, RpcConfig config)
         {
             _idToDelegate[_nextMethodId] = @delegate;
@@ -365,8 +370,6 @@ namespace ZNet.Communication.Rpc
 
         }
 
-
-
         public void Invoke(Delegate method)
         {
             if (!HasObserversOrClient())
@@ -434,6 +437,14 @@ namespace ZNet.Communication.Rpc
             {
                 InvokeLocally(method, args, args.Length);
             }
+
+            ushort rpcId = _delegateToId[method];
+            RpcConfig config = _idToConfig[rpcId];
+            _writerSend.Reset();
+            SerializePacketTypeAndHashId(_writerSend);
+            SerializeRpc(_writerSend, rpcId, args, args.Length);
+            var data = _writerSend.GetSpan();
+            _api.SendTo(peerId, data, config.Channel, (ZNetMultiplayer.SendMode)config.SendMode);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

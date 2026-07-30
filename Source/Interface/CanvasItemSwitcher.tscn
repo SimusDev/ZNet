@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bgcs6mtsjj60o"]
+
+[ext_resource type="Script" uid="uid://dkjtos2aaurw1" path="res://Source/Interface/CanvasItemSwitcher.cs" id="1_wl4w3"]
+
+[node name="CanvasItemSwitcher" type="Node" unique_id=1263201495]
+script = ExtResource("1_wl4w3")
