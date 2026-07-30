@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://btupqgmonvwrf"]
+
+[ext_resource type="Script" uid="uid://dg62gv0pujyix" path="res://addons/ZNet/Prototyping/Components/NetworkSpawner.cs" id="1_yfe3c"]
+
+[node name="NetworkSpawner" type="Node" unique_id=1411041026]
+script = ExtResource("1_yfe3c")

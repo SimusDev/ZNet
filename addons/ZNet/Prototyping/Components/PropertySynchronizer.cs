@@ -32,7 +32,7 @@ namespace ZNet.Prototyping.Components
 		{
 			if (_deltas.TryGetValue(property, out Variant data))
 			{
-				return !data.Equals(data);
+				return !Get(property).Equals(data);
 			}
 
 			_deltas[property] = Get(property);

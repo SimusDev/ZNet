@@ -107,10 +107,6 @@ namespace ZNet.Communication
             }
         }
 
-        public void SendToServer()
-        {
-
-        }
 
     }
 
