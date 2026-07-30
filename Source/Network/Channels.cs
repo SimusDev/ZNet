@@ -7,5 +7,6 @@ namespace ZNet.Source.Network
         Inventory,
         BigData,
         Users,
+        AnotherFuckingChannel,
     }
 }
