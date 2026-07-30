@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c06uax4ngsk08" path="res://Scenes/World.cs" id="1_5cjrv"]
 [ext_resource type="Texture2D" uid="uid://fr4ph06fe0wb" path="res://Textures/Prototype/Kenney/Orange/texture_09.png" id="2_j0p05"]
+[ext_resource type="PackedScene" uid="uid://btupqgmonvwrf" path="res://addons/ZNet/Prototyping/Components/NetworkSpawner.tscn" id="2_p70al"]
 [ext_resource type="Script" uid="uid://chhgr15rsfog7" path="res://Source/World/Level.cs" id="3_5nsto"]
 [ext_resource type="PackedScene" uid="uid://dt5hdm0ykcssj" path="res://Source/World/FreeCamera3D.tscn" id="4_gjpho"]
 
@@ -30,6 +31,9 @@ data = PackedVector3Array(250, 0, 250, -250, 0, 250, 250, 0, -250, -250, 0, 250,
 
 [node name="World" type="Node3D" unique_id=239433759]
 script = ExtResource("1_5cjrv")
+
+[node name="NetworkSpawner" parent="." unique_id=1411041026 node_paths=PackedStringArray("RootNode") instance=ExtResource("2_p70al")]
+RootNode = NodePath("../MainLevel")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1352534679]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)

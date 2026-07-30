@@ -325,14 +325,14 @@ namespace ZNet.Communication.Rpc
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void SerializePacketTypeAndHashId(BinaryWriter writer)
+        private void SerializePacketTypeAndHashId(BinaryWriter writer)
         {
             writer.WriteByte((byte)ZNetMultiplayer.PacketType.RpcSystem);
             writer.WriteULong(_netId);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void SerializeRpc(BinaryWriter writer, ushort rpcId, object[] args, int argsLength)
+        private void SerializeRpc(BinaryWriter writer, ushort rpcId, object[] args, int argsLength)
         {
             writer.WriteUShort(rpcId);
             writer.WriteByte((byte)argsLength);
