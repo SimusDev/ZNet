@@ -31,6 +31,10 @@ namespace ArmaMovement.Components {
             _movementController.StateMachine.EmplaceState<States.Movement.CrouchedWalking>();
             _movementController.StateMachine.EmplaceState<States.Movement.CrouchedRunning>();
             _movementController.StateMachine.EmplaceState<States.Movement.ProneMoving>();
+
+            bool isAthority = IsMultiplayerAuthority();
+            SetProcess(isAthority);
+            SetPhysicsProcess(isAthority);
         }
 
         public override void _PhysicsProcess(double delta)
@@ -129,6 +133,11 @@ namespace ArmaMovement.Components {
                 _playerHead.CharacterBody.Velocity.Y,
                 moveDirection.Z * targetSpeed
             );
+        }
+
+        private void _RotateBodyTowards(float delta)
+        {
+            
         }
     }
 }

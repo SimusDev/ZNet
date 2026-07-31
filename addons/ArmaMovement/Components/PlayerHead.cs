@@ -21,7 +21,7 @@ namespace ArmaMovement.Components
             _mouseSensitivity = ProjectSettings.GetSetting("camera/mouse_sensitivity", 1.0f).As<float>();
             
         }
-
+		
         public override void _Input(InputEvent @event)
         {
             if (@event is InputEventMouseMotion mouseMotion && Input.MouseMode == Input.MouseModeEnum.Captured)
