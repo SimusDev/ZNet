@@ -1,14 +1,82 @@
-[gd_scene format=3 uid="uid://ch2uynj0kh3ya"]
+[gd_scene format=3 uid="uid://cgcbm6kr3g40a"]
 
-[ext_resource type="Script" uid="uid://ciasint1ymy7j" path="res://Source/Entity/PlayerComponent.cs" id="2_yb88c"]
+[ext_resource type="Script" uid="uid://ctexpwm6fo676" path="res://addons/ArmaMovement/Components/Movement.cs" id="1_jrpmb"]
+[ext_resource type="Script" uid="uid://0dj2lgxt4kqk" path="res://addons/ArmaMovement/Components/PlayerHead.cs" id="1_k8pu1"]
+[ext_resource type="PackedScene" uid="uid://h8ghkj0t620s" path="res://addons/ZNet/Prototyping/Components/PropertySynchronizer.tscn" id="1_mp68b"]
+[ext_resource type="Texture2D" uid="uid://bdxgmnjbvmn14" path="res://Textures/Prototype/Kenney/Light/texture_11.png" id="2_ib165"]
+[ext_resource type="Script" uid="uid://b32gkw1t08vdv" path="res://addons/ArmaMovement/Components/MovementController.cs" id="2_k8pu1"]
+[ext_resource type="Script" uid="uid://dcca23nr6fjdc" path="res://addons/ArmaMovement/Components/StateMachine.cs" id="3_dqyc2"]
+[ext_resource type="Texture2D" uid="uid://d16pos3q2eoum" path="res://Textures/Prototype/Kenney/Light/texture_07.png" id="5_dqyc2"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_xp3p0"]
+[sub_resource type="SphereMesh" id="SphereMesh_sx3cy"]
 
-[node name="Player" type="CharacterBody3D" unique_id=676746881]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k8pu1"]
+albedo_texture = ExtResource("2_ib165")
+uv1_triplanar = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1591185566]
-shape = SubResource("CapsuleShape3D_xp3p0")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_sx3cy"]
 
-[node name="PlayerComponent" type="Node3D" parent="." unique_id=353437392]
-script = ExtResource("2_yb88c")
-metadata/_custom_type_script = "uid://ciasint1ymy7j"
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dqyc2"]
+albedo_texture = ExtResource("5_dqyc2")
+uv1_triplanar = true
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fnvcv"]
+radius = 0.11035156
+height = 0.8947754
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fnvcv"]
+
+[node name="Player" type="CharacterBody3D" unique_id=1399258395]
+
+[node name="PropertySynchronizer" parent="." unique_id=955401790 node_paths=PackedStringArray("Target") instance=ExtResource("1_mp68b")]
+Target = NodePath("..")
+Properties = PackedStringArray("position", "velocity", "rotation", "scale")
+
+[node name="PlayerHead" type="Node3D" parent="." unique_id=1875924925 node_paths=PackedStringArray("_camera", "_pitchPivot", "_characterBody")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("1_k8pu1")
+_camera = NodePath("MeshInstance3D/Camera3D")
+_pitchPivot = NodePath("MeshInstance3D")
+_characterBody = NodePath("..")
+metadata/_custom_type_script = "uid://0dj2lgxt4kqk"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHead" unique_id=1906180084]
+mesh = SubResource("SphereMesh_sx3cy")
+surface_material_override/0 = SubResource("StandardMaterial3D_k8pu1")
+
+[node name="Camera3D" type="Camera3D" parent="PlayerHead/MeshInstance3D" unique_id=1603356606]
+
+[node name="PropertySynchronizer" parent="PlayerHead/MeshInstance3D" unique_id=1720145056 node_paths=PackedStringArray("Target") instance=ExtResource("1_mp68b")]
+Target = NodePath("..")
+Properties = PackedStringArray("rotation")
+
+[node name="PropertySynchronizer" parent="PlayerHead" unique_id=1476499998 node_paths=PackedStringArray("Target") instance=ExtResource("1_mp68b")]
+Target = NodePath("..")
+Properties = PackedStringArray("position", "rotation", "scale")
+
+[node name="Movement" type="Node" parent="." unique_id=2090911000 node_paths=PackedStringArray("_playerHead", "_movementController", "_body")]
+script = ExtResource("1_jrpmb")
+_playerHead = NodePath("../PlayerHead")
+_movementController = NodePath("MovementController")
+_body = NodePath("../PlayerBody")
+metadata/_custom_type_script = "uid://ctexpwm6fo676"
+
+[node name="MovementController" type="Node" parent="Movement" unique_id=1735610 node_paths=PackedStringArray("StateMachine")]
+script = ExtResource("2_k8pu1")
+StateMachine = NodePath("StateMachine")
+metadata/_custom_type_script = "uid://b32gkw1t08vdv"
+
+[node name="StateMachine" type="Node" parent="Movement/MovementController" unique_id=1780655503]
+script = ExtResource("3_dqyc2")
+metadata/_custom_type_script = "uid://dcca23nr6fjdc"
+
+[node name="PlayerBody" type="MeshInstance3D" parent="." unique_id=1808331465]
+mesh = SubResource("CapsuleMesh_sx3cy")
+surface_material_override/0 = SubResource("StandardMaterial3D_dqyc2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerBody" unique_id=1290085754]
+transform = Transform3D(1, 0, 0, 0, -0.058059253, -0.9983131, 0, 0.9983131, -0.058059253, 0, -0.2521527, -0.6942418)
+mesh = SubResource("CapsuleMesh_fnvcv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1251756589]
+shape = SubResource("CapsuleShape3D_fnvcv")

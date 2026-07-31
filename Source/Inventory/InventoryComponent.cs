@@ -3,6 +3,7 @@ using ZNet.Communication.Rpc;
 
 namespace ZNet.Source.Inventory
 {
+	[Icon("Icons/backpack.png")]
 	public partial class InventoryComponent : Node
 	{
 		private RpcSystem _rpc = new();
