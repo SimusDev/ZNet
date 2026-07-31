@@ -262,6 +262,7 @@ public unsafe class BinaryWriter : IDisposable
     public void Reset()
     {
         _position = 0;
+        
     }
 
     public int Position => _position;

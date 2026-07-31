@@ -61,6 +61,7 @@ namespace ZNet.Communication
         {
             string hashStr = $"{GetHashStringSalt()}_{name}";
             ulong hashId = ZNetMultiplayer.HashStringDetermenistic(hashStr);
+            //GD.Print(hashStr);
             ApplyHashIdAndRegister(hashId);
         }
 
@@ -85,6 +86,7 @@ namespace ZNet.Communication
         {
             string hashInput = $"HashByNode_{node.GetPath().ToString()}";
             RegisterByName(hashInput);
+            //GD.Print($"UNIQUE ID: {_api.UniqueId}: ", hashInput);
         }
 
         public void RegisterByResource(Resource resource)

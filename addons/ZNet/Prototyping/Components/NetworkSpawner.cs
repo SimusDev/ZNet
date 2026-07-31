@@ -64,6 +64,8 @@ namespace ZNet.Prototyping.Components
 			if (!CanSerializeNode(node))
 				return;
 
+			node.Name = node.Name.ToString().ValidateNodeName();
+
 			await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 
 			_writer.Reset();

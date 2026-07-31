@@ -269,20 +269,22 @@ namespace ZNet
 		{
 			if (_connections.TryGetValue(peerId, out var peer))
 			{
+				//GD.Print($"Sending to peer {peerId}: {data.Length} bytes. {sendMode}");
 				peer.Send(data, channel, (DeliveryMethod)sendMode);
 			}
 
 			else
 			{
-				GD.PushError($"Peer {peerId} was not found");
+				//GD.PushError($"Peer {peerId} was not found");
 			}
 		}
 
 		public void SendToServer(ReadOnlySpan<byte> data, byte channel, SendMode sendMode)
 		{
+			//GD.Print($"Sending to server: {data.Length} bytes. {sendMode}");
 			if (ServerPeer == null)
 			{
-				GD.PushError("Server Peer was not found");
+				//GD.PushError("Server Peer was not found");
 				return;
 			}
 

@@ -16,17 +16,17 @@ namespace ArmaMovement.Components
 		private float _mouseSensitivity = 0.0f;
 		private const float SENS_NORMALIZE = 0.005f;
 
-        public override void _Ready()
-        {
-            _mouseSensitivity = ProjectSettings.GetSetting("camera/mouse_sensitivity", 1.0f).As<float>();
-            bool isAthority = GetMultiplayerAuthority() == ZNet.ZNetMultiplayer.Instance.UniqueId;
+		public override void _Ready()
+		{
+			_mouseSensitivity = ProjectSettings.GetSetting("camera/mouse_sensitivity", 1.0f).As<float>();
+			bool isAthority = GetMultiplayerAuthority() == ZNet.ZNetMultiplayer.Instance.UniqueId;
 
-            _camera.Current = isAthority;
-            
-            SetProcess(isAthority);
-            SetPhysicsProcess(isAthority);
-            SetProcessInput(isAthority);
-        }
+			_camera.Current = isAthority;
+			
+			SetProcess(isAthority);
+			SetPhysicsProcess(isAthority);
+			SetProcessInput(isAthority);
+		}
 		
 		public override void _Input(InputEvent @event)
 		{

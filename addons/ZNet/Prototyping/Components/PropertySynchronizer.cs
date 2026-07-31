@@ -28,14 +28,16 @@ namespace ZNet.Prototyping.Components
 		private BinaryWriter _writer = new();
 		private BinaryReader _reader = new();
 
+		private List<string> _changedProperties = new();
+
 		private bool CheckPropertyDelta(string property)
 		{
 			if (_deltas.TryGetValue(property, out Variant data))
 			{
-				return !Get(property).Equals(data);
+				return !Target.Get(property).Equals(data);
 			}
 
-			_deltas[property] = Get(property);
+			_deltas[property] = Target.Get(property);
 			return true;
 		}
 
@@ -87,7 +89,7 @@ namespace ZNet.Prototyping.Components
 			_writer.WriteVarInt(Properties.Length);
 			for (int i = 0; i < Properties.Length; i++)
 			{
-				Variant value = Get(Properties[i]);
+				Variant value = Target.Get(Properties[i]);
 				_writer.WriteBytesDynamic(GD.VarToBytes(value));
 			}
 
@@ -103,7 +105,7 @@ namespace ZNet.Prototyping.Components
 		private void _AuthorityProcess(double delta)
 		{
 			_tickTime += delta;
-			if (_tickTime >= TickRate)
+			if (_tickTime >= (1.0 / TickRate))
 			{
 				Synchronize();
 				_tickTime = 0;
@@ -112,24 +114,26 @@ namespace ZNet.Prototyping.Components
 
 		public void Synchronize()
 		{
-			string[] changed = [];
+			_changedProperties.Clear();
 
 			foreach (string property in Properties)
 			{
 				if (CheckPropertyDelta(property) || Reliable == false)
 				{
-					changed.Append(property);
+					_changedProperties.Add(property);
 				}
 			}
 
-			if (changed.Length < 1)
+			if (_changedProperties.Count < 1)
 				return;
 
-			_writer.WriteVarInt(changed.Length);
+			_writer.Reset();
 
-			foreach (string property in changed)
+			_writer.WriteVarInt(_changedProperties.Count);
+
+			foreach (string property in _changedProperties)
 			{
-				Variant value = Get(property);
+				Variant value = Target.Get(property);
 				_writer.WriteBytesDynamic(GD.VarToBytes(value));
 			}
 
@@ -185,11 +189,12 @@ namespace ZNet.Prototyping.Components
 			_reader.Seek(0);
 
 			int propertyCount = _reader.ReadVarInt();
+
 			for (int i = 0; i < propertyCount; i++)
 			{
 				Variant value = GD.BytesToVar(_reader.ReadBytesDynamic());
 				string property = Properties[i];
-				Set(property, value);
+				Target.Set(property, value);
 			}
 		}
 

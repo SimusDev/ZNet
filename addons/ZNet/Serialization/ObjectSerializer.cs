@@ -9,7 +9,6 @@ namespace ZNet.Serialization
         private static Dictionary<ushort, Type> _idToType = new();
         private static ushort _nextTypeId = 1;
 
-        // ИНТЕРФЕЙСЫ ИМЕЮТ ОТДЕЛЬНЫЕ ID (НАЧИНАЮТСЯ С 0x8000):
         private const ushort INTERFACE_ID_START = 0x8000;
         private static ushort _nextInterfaceId = INTERFACE_ID_START;
 
@@ -98,7 +97,6 @@ namespace ZNet.Serialization
 
         }
 
-        // РЕГИСТРАЦИЯ ОБЫЧНОГО ТИПА (ID 1-32767):
         public static void Register<T>(Action<BinaryWriter, T> writer, Func<BinaryReader, T> reader)
         {
             var type = typeof(T);
@@ -114,7 +112,6 @@ namespace ZNet.Serialization
             _readers[type] = r => reader(r);
         }
 
-        // РЕГИСТРАЦИЯ ИНТЕРФЕЙСА (ID 32768-65535):
         public static void RegisterInterface<T>(Action<BinaryWriter, T> writer, Func<BinaryReader, T> reader) where T : class
         {
             var type = typeof(T);
@@ -123,7 +120,7 @@ namespace ZNet.Serialization
             if (_writers.ContainsKey(type)) return;
 
             ushort interfaceId = _nextInterfaceId++;
-            if (interfaceId == 0) // Переполнение
+            if (interfaceId == 0)
                 throw new Exception("Too many interfaces registered!");
 
             _typeToId[type] = interfaceId;
@@ -131,8 +128,6 @@ namespace ZNet.Serialization
             _writers[type] = (w, obj) => writer(w, (T)obj);
             _readers[type] = r => reader(r);
         }
-
-        // ЗАПИСЬ ОБЪЕКТА:
 
         public static void Write(BinaryWriter writer, object value)
         {
@@ -152,7 +147,6 @@ namespace ZNet.Serialization
             _writers[type](writer, value);
         }
 
-        // ЧТЕНИЕ ОБЪЕКТА:
         public static object Read(BinaryReader reader)
         {
             byte marker = reader.ReadByte();

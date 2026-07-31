@@ -44,7 +44,7 @@ public partial class SimpleProfiler : Control
 
 		_label.Text = $"Fps: {Engine.GetFramesPerSecond()}   Ping: {ping}ms\nIn: {statistics.PacketsReceived}   " +
 			$"{TrafficFormatter.FormatBytesPerSecond(statistics.BytesReceived)}\nOut: {statistics.PacketsSent}" +
-			$"   {TrafficFormatter.FormatBytesPerSecond(statistics.BytesSent)}\nLoss: {statistics.PacketLossPercent}%";
+			$"   {TrafficFormatter.FormatBytesPerSecond(statistics.BytesSent)}\nLoss: {statistics.PacketLossPercent}%   ID: {_api.UniqueId}";
 	}
 
 
