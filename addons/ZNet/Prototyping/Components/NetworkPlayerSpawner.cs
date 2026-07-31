@@ -4,64 +4,85 @@ using System;
 
 namespace ZNet.Prototyping.Components
 {
-    public partial class NetworkPlayerSpawner : NetworkSpawner
-    {
-        [Export] public PackedScene PlayerScene;
-        [Export] public Array<Node> SpawnPoints = new();
+	public partial class NetworkPlayerSpawner : NetworkSpawner
+	{
+		[Export] public PackedScene PlayerScene;
+		[Export] public Array<Node> SpawnPoints = new();
 
-        private Dictionary<int, Node> _players = new();
+		[Export] public bool SpawnServerPlayer = false;
 
-        public override void _Ready()
-        {
-            base._Ready();
+		private Dictionary<int, Node> _players = new();
 
-            if (PlayerScene == null)
-            {
-                GD.PushError("Player scene is null!");
-                return;
-            }
+		public override void _Ready()
+		{
+			base._Ready();
 
-            if (RootNode == null)
-            {
-                GD.PushError("RootNode is null!");
-                return;
-            }
+			if (PlayerScene == null)
+			{
+				GD.PushError("Player scene is null!");
+				return;
+			}
 
-            ZNetMultiplayer.ServerPeerConnected += OnServerPeerConnected;
-            ZNetMultiplayer.ServerPeerDisconnected += OnServerPeerDisconnected;
-        }
+			if (RootNode == null)
+			{
+				GD.PushError("RootNode is null!");
+				return;
+			}
 
-        private void OnServerPeerDisconnected(int id)
-        {
-            var playerNode = PlayerScene.Instantiate();
-            playerNode.SetMultiplayerAuthority(id);
-            RootNode.AddChild(playerNode);
+			ZNetMultiplayer.ServerPeerConnected += OnServerPeerConnected;
+			ZNetMultiplayer.ServerPeerDisconnected += OnServerPeerDisconnected;
 
-            var pickedPoint = SpawnPoints.PickRandom();
-            if (pickedPoint != null)
-            {
-                if (pickedPoint is Node2D point2d && playerNode is Node2D player2d)
-                {
-                    player2d.GlobalTransform = point2d.GlobalTransform;
-                }
+			OnNetworkStatusChangedPlayerSpawner(ZNetMultiplayer.Status);
+		}
 
-                if (pickedPoint is Node3D point3d && playerNode is Node3D player3d)
-                {
-                    player3d.GlobalTransform = point3d.GlobalTransform;
-                }
-            }
+		private void OnNetworkStatusChangedPlayerSpawner(ZNetMultiplayer.NetworkStatus status)
+		{
+			if (SpawnServerPlayer && ZNetMultiplayer.IsServer)
+			{
+				TrySpawnPlayer(ZNetMultiplayer.UniqueId);
+			}
+		}
 
-            _players[id] = playerNode;
-        }
+		private void TrySpawnPlayer(int id)
+		{
+			var playerNode = PlayerScene.Instantiate();
+			playerNode.SetMultiplayerAuthority(id);
+			RootNode.AddChild(playerNode);
 
-        private void OnServerPeerConnected(int id)
-        {
-            if (_players.TryGetValue(id, out var playerNode))
-            {
-                playerNode?.QueueFree();
-                _players.Remove(id);
-            }
+			var pickedPoint = SpawnPoints.PickRandom();
+			if (pickedPoint != null)
+			{
+				if (pickedPoint is Node2D point2d && playerNode is Node2D player2d)
+				{
+					player2d.GlobalTransform = point2d.GlobalTransform;
+				}
 
-        }
-    }
+				if (pickedPoint is Node3D point3d && playerNode is Node3D player3d)
+				{
+					player3d.GlobalTransform = point3d.GlobalTransform;
+				}
+			}
+
+			_players[id] = playerNode;
+		}
+
+		private void TryDespawnPlayer(int id)
+		{
+			if (_players.TryGetValue(id, out var playerNode))
+			{
+				playerNode?.QueueFree();
+				_players.Remove(id);
+			}
+		}
+
+		private void OnServerPeerDisconnected(int id)
+		{
+			TryDespawnPlayer(id);
+		}
+
+		private void OnServerPeerConnected(int id)
+		{
+			TrySpawnPlayer(id);
+		}
+	}
 }

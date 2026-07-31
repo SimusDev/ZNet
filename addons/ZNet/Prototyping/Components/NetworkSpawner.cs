@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZNet.Communication.Rpc;
@@ -18,6 +19,8 @@ namespace ZNet.Prototyping.Components
 
 		private BinaryWriter _writer = new();
 		private BinaryReader _reader = new();
+
+		private List<Node> _nodesToSerialize = new();
 
 		public override void _Ready()
 		{
@@ -39,7 +42,9 @@ namespace ZNet.Prototyping.Components
 
 			ZNetMultiplayer.NetworkStatusChanged += OnNetworkStatusChanged;
 			OnNetworkStatusChanged(ZNetMultiplayer.Status);
+			
 		}
+
 
 		private void OnChildExitingTree(Node node)
 		{
@@ -88,7 +93,7 @@ namespace ZNet.Prototyping.Components
 
 		}
 
-		private void OnNetworkStatusChanged(ZNetMultiplayer.NetworkStatus status)
+		protected virtual void OnNetworkStatusChanged(ZNetMultiplayer.NetworkStatus status)
 		{
 			if (status == ZNetMultiplayer.NetworkStatus.Ready)
 			{
@@ -130,32 +135,32 @@ namespace ZNet.Prototyping.Components
 
 		private bool CanSerializeNode(Node node)
 		{
-			return node.SceneFilePath != "";
+			return !node.SceneFilePath.Equals(string.Empty);
 		}
 
 		[RemoteFunc(RpcType.ToServer)]
-		private void ServerAcceptClient()
+		protected void ServerAcceptClient()
 		{
 			if (RootNode == null)
 				return;
 
-			Node[] toSerialize = [];
+			_nodesToSerialize.Clear();
 
 			foreach (var child in RootNode.GetChildren())
 			{
 				if (!CanSerializeNode(child))
 					continue;
 
-				toSerialize.Append(child);
+				_nodesToSerialize.Add(child);
 			}
 
-			if (toSerialize.Length < 1)
+			if (_nodesToSerialize.Count < 1)
 				return;
 
 			_writer.Reset();
-			_writer.WriteVarInt(toSerialize.Length);
+			_writer.WriteVarInt(_nodesToSerialize.Count);
 
-			foreach (var node in toSerialize)
+			foreach (var node in _nodesToSerialize)
 			{
 				SerializeNode(node, _writer);
 			}
@@ -164,7 +169,7 @@ namespace ZNet.Prototyping.Components
 		}
 
 		[RemoteFunc(RpcType.ToObserver)]
-		private void UnpackAndSpawn(byte[] data)
+		protected void UnpackAndSpawn(byte[] data)
 		{
 			if (RootNode == null)
 				return;
@@ -173,12 +178,14 @@ namespace ZNet.Prototyping.Components
 			_reader.Seek(0);
 
 			int nodeCount = _reader.ReadVarInt();
+
 			for (int i = 0; i < nodeCount; i++)
 			{
-				PackedScene scene = _reader.ReadResourceOrNull<PackedScene>();
+				PackedScene scene = _reader.ReadResource<PackedScene>();
 				Node node = scene.Instantiate();
 				string nodeName = _reader.ReadString();
 				int auth = _reader.ReadVarInt();
+				node.Name = nodeName;
 				node.SetMultiplayerAuthority(auth);
 
 				byte type = _reader.ReadByte();
@@ -196,7 +203,7 @@ namespace ZNet.Prototyping.Components
 		}
 
 		[RemoteFunc(RpcType.ToObserver)]
-		private void UnpackAndDespawn(string path)
+		protected void UnpackAndDespawn(string path)
 		{
 			if (RootNode == null)
 				return;

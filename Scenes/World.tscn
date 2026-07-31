@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://dsxcwi2asfnha"]
 
 [ext_resource type="Script" uid="uid://c06uax4ngsk08" path="res://Scenes/World.cs" id="1_5cjrv"]
-[ext_resource type="PackedScene" uid="uid://btupqgmonvwrf" path="res://addons/ZNet/Prototyping/Components/NetworkSpawner.tscn" id="2_p70al"]
+[ext_resource type="PackedScene" uid="uid://cexgiul41kpo3" path="res://addons/ZNet/Prototyping/Components/NetworkPlayerSpawner.tscn" id="2_p70al"]
 [ext_resource type="Script" uid="uid://chhgr15rsfog7" path="res://Source/World/Level.cs" id="3_5nsto"]
-[ext_resource type="PackedScene" uid="uid://dt5hdm0ykcssj" path="res://Source/World/FreeCamera3D.tscn" id="4_gjpho"]
+[ext_resource type="PackedScene" uid="uid://ch2uynj0kh3ya" path="res://Source/Entity/Player.tscn" id="3_45d1s"]
 [ext_resource type="Texture2D" uid="uid://0fgu6pnbwp6a" path="res://Textures/Prototype/Kenney/Dark/texture_08.png" id="4_p70al"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_gjpho"]
@@ -35,8 +35,11 @@ data = PackedVector3Array(250, 0, 250, -250, 0, 250, 250, 0, -250, -250, 0, 250,
 [node name="World" type="Node3D" unique_id=239433759]
 script = ExtResource("1_5cjrv")
 
-[node name="NetworkSpawner" parent="." unique_id=1411041026 node_paths=PackedStringArray("RootNode") instance=ExtResource("2_p70al")]
-RootNode = NodePath("../MainLevel")
+[node name="NetworkPlayerSpawner" parent="." unique_id=980762599 node_paths=PackedStringArray("SpawnPoints", "RootNode") instance=ExtResource("2_p70al")]
+PlayerScene = ExtResource("3_45d1s")
+SpawnPoints = [NodePath("../Players")]
+SpawnServerPlayer = true
+RootNode = NodePath("../Players")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1352534679]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
@@ -44,9 +47,6 @@ shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2051396056]
 environment = SubResource("Environment_45d1s")
-
-[node name="FreeCamera3D" parent="." unique_id=984376976 instance=ExtResource("4_gjpho")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4903793, 0)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=921302868]
 
@@ -58,3 +58,6 @@ shape = SubResource("ConcavePolygonShape3D_gjpho")
 
 [node name="MainLevel" type="Node3D" parent="." unique_id=47433303]
 script = ExtResource("3_5nsto")
+
+[node name="Players" type="Node3D" parent="." unique_id=1811045349]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1898894, 0)

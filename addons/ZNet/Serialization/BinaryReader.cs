@@ -329,8 +329,11 @@ public unsafe class BinaryReader : IDisposable
 
     public T ReadResourceOrNull<T>() where T : Godot.Resource
     {
-        if (ReadBool())
+        if (ReadBool() == true)
+        {
             return null;
+        }
+
         return ReadResource<T>();
     }
 
