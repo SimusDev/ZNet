@@ -18,6 +18,9 @@ namespace ZNet.Source.Interface.Main.Screens
 		{
 			switch (button.Name)
 			{
+				case "Server":
+					ZNetMultiplayer.Instance.StartServer(8080);
+					break;
 				case "Quit":
 					GetTree().Quit();
 					break;

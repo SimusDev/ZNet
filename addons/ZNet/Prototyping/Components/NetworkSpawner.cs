@@ -10,9 +10,9 @@ namespace ZNet.Prototyping.Components
 {
 	public partial class NetworkSpawner : Node
 	{
-		[Export] private Node RootNode;
+		[Export] public Node RootNode;
 
-		private ZNetMultiplayer ZNetMultiplayer;
+		protected ZNetMultiplayer ZNetMultiplayer;
 
 		private RpcSystem _rpcSystem = new();
 
@@ -75,6 +75,17 @@ namespace ZNet.Prototyping.Components
 			writer.WriteResource(GD.Load<PackedScene>(node.SceneFilePath));
 			writer.WriteString(validatedName);
 			writer.WriteVarInt(node.GetMultiplayerAuthority());
+			if (node is Node2D || node is Node3D)
+			{
+				writer.WriteByte(1);
+				writer.WriteBytesDynamic(GD.VarToBytes(node.Get("transform")));
+			}
+			else
+			{
+				writer.WriteByte(0);
+			}
+
+
 		}
 
 		private void OnNetworkStatusChanged(ZNetMultiplayer.NetworkStatus status)
@@ -169,6 +180,13 @@ namespace ZNet.Prototyping.Components
 				string nodeName = _reader.ReadString();
 				int auth = _reader.ReadVarInt();
 				node.SetMultiplayerAuthority(auth);
+
+				byte type = _reader.ReadByte();
+				if (type == 1)
+				{
+					Variant transform = GD.BytesToVar(_reader.ReadBytesDynamic());
+					node.Set("transform", transform);
+				}
 
 				RootNode.AddChild(node);
 			}
