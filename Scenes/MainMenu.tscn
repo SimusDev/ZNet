@@ -13,8 +13,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="CanvasItemSwitcher" parent="." unique_id=1263201495 node_paths=PackedStringArray("_items") instance=ExtResource("1_tt5f1")]
+[node name="CanvasItemSwitcher" parent="." unique_id=1263201495 node_paths=PackedStringArray("_items", "_binds") instance=ExtResource("1_tt5f1")]
 _items = [NodePath("../MainScreen"), NodePath("../MultiplayerScreen"), NodePath("../SettingsScreen")]
+_binds = {
+NodePath("../MainScreen/VBoxContainer/Multiplayer"): NodePath("../MultiplayerScreen"),
+NodePath("../MainScreen/VBoxContainer/Settings"): NodePath("../MultiplayerScreen")
+}
 
 [node name="MainScreen" parent="." unique_id=927799133 instance=ExtResource("2_ghw46")]
 layout_mode = 1
@@ -24,3 +28,7 @@ layout_mode = 1
 
 [node name="SettingsScreen" parent="." unique_id=1334441638 instance=ExtResource("4_ghw46")]
 layout_mode = 1
+
+[editable path="MainScreen"]
+[editable path="MultiplayerScreen"]
+[editable path="SettingsScreen"]
