@@ -9,8 +9,6 @@ namespace ArmaMovement.Components {
         [Export] private Node3D _body;
 
         [ExportGroup("Settings")]
-        [Export] private float _turnSpeed = 3.0f;
-
         [Export] private float _gravityMultiplier = 1.0f;
         private float _gravity = 0.0f;
         //[Export] private float _angleThreshold = 0.1f;
@@ -22,45 +20,46 @@ namespace ArmaMovement.Components {
 
         public override void _Ready()
         {
+            // States
+            _movementController.StateMachine.EmplaceState<States.Movement.Air>();
+
             _movementController.StateMachine.EmplaceState<States.Movement.Idle>();
             _movementController.StateMachine.EmplaceState<States.Movement.Running>();
-            _movementController.StateMachine.EmplaceState<States.Movement.Walk>();
             _movementController.StateMachine.EmplaceState<States.Movement.EasyRunning>();
-            _movementController.StateMachine.EmplaceState<States.Movement.Air>();
+            _movementController.StateMachine.EmplaceState<States.Movement.Walk>();
+
             _movementController.StateMachine.EmplaceState<States.Movement.Crouched>();
             _movementController.StateMachine.EmplaceState<States.Movement.CrouchedWalking>();
             _movementController.StateMachine.EmplaceState<States.Movement.CrouchedRunning>();
-            _movementController.StateMachine.EmplaceState<States.Movement.ProneMoving>();
 
-            bool isAthority = IsMultiplayerAuthority();
+            _movementController.StateMachine.EmplaceState<States.Movement.Prone>();
+            _movementController.StateMachine.EmplaceState<States.Movement.ProneMoving>();
+            //
+
+
+            bool isAthority = GetMultiplayerAuthority() == ZNet.ZNetMultiplayer.Instance.UniqueId;
             SetProcess(isAthority);
             SetPhysicsProcess(isAthority);
         }
 
         public override void _PhysicsProcess(double delta)
         {
+            float deltaF = (float)delta;
+            
             if (_playerHead.CharacterBody.IsOnFloor())
             {
-                _GroundPhysics((float)delta);
+                _GroundPhysics(deltaF);
             }
             else
             {
-                _AirPhysics((float)delta);
+                _AirPhysics(deltaF);
             }
 
-            float maxTurn = _turnSpeed * (float)delta;
-            float newY = Mathf.LerpAngle(
-                _body.Rotation.Y,
-                _playerHead.Rotation.Y,
-                maxTurn
-                );
-            
-            _body.Rotation = new Vector3(
-                _body.Rotation.X,
-                newY,
-                _body.Rotation.Z
-                );
-            
+            if (_movementController.StateMachine.TryGetCurrentState<States.Movement.Base>(out var state))
+            {
+                _RotateBodyTowards(deltaF, state);
+                _AdjustHeadHeight(deltaF, state);
+            }
 
             _playerHead.CharacterBody.MoveAndSlide();
         }
@@ -120,11 +119,10 @@ namespace ArmaMovement.Components {
             }
 
             float targetSpeed = 0.0f;
-            if (_movementController.StateMachine.CurrentState is States.Movement.Base moveState)
+            if (_movementController.StateMachine.TryGetCurrentState<States.Movement.Base>(out var state))
             {
-                targetSpeed = moveState.Speed;
+                targetSpeed = state.Speed;
             }
-
             
             Vector3 moveDirection = (_body.GlobalTransform.Basis * _movementController.MoveInput).Normalized();
 
@@ -135,8 +133,32 @@ namespace ArmaMovement.Components {
             );
         }
 
-        private void _RotateBodyTowards(float delta)
+        private void _RotateBodyTowards(float delta, States.Movement.Base state)
         {
+            float maxTurn = state.TurnSpeed * (float)delta;
+            float newY = Mathf.LerpAngle(
+                _body.Rotation.Y,
+                _playerHead.Rotation.Y,
+                maxTurn
+                );
+            
+            _body.Rotation = new Vector3(
+                _body.Rotation.X,
+                newY,
+                _body.Rotation.Z
+                );
+        }
+
+        private void _AdjustHeadHeight(float delta, States.Movement.Base state)
+        {
+            float lerpSpeed = 22.5f * delta; 
+            Vector3 newPos = new(
+                Mathf.Lerp(_playerHead.Position.X, state.HeadPosition.X, lerpSpeed),
+                Mathf.Lerp(_playerHead.Position.Y, state.HeadPosition.Y, lerpSpeed),
+                Mathf.Lerp(_playerHead.Position.Z, state.HeadPosition.Z, lerpSpeed)
+            );
+            
+            _playerHead.Position = newPos;
             
         }
     }

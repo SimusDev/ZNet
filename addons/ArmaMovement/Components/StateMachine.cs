@@ -10,7 +10,12 @@ namespace ArmaMovement.Components
         private Dictionary<Type, States.Base> _states = [];
 
         private States.Base _currentState;
-        public States.Base CurrentState => _currentState;
+        public T GetCurrentState<T>() where T : States.Base => _currentState as T;
+        public bool TryGetCurrentState<T>(out T state) where T : States.Base
+        {
+            state = GetCurrentState<T>();
+            return state != null;
+        }
 
         public void EmplaceState<T>() where T : States.Base, new()
         {

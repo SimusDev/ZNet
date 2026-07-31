@@ -20,7 +20,12 @@ uv1_triplanar = true
 albedo_texture = ExtResource("5_dqyc2")
 uv1_triplanar = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_war76"]
+albedo_texture = ExtResource("2_ib165")
+uv1_triplanar = true
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_fnvcv"]
+material = SubResource("StandardMaterial3D_war76")
 radius = 0.11035156
 height = 0.8947754
 
@@ -76,6 +81,14 @@ surface_material_override/0 = SubResource("StandardMaterial3D_dqyc2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerBody" unique_id=1290085754]
 transform = Transform3D(1, 0, 0, 0, -0.058059253, -0.9983131, 0, 0.9983131, -0.058059253, 0, -0.2521527, -0.6942418)
+mesh = SubResource("CapsuleMesh_fnvcv")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="PlayerBody" unique_id=1904180638]
+transform = Transform3D(-4.371139e-08, -0.9983131, 0.058059253, 0, -0.058059253, -0.9983131, 1, -4.363765e-08, 2.5378506e-09, 0.75877637, 0.6609652, 0.11407596)
+mesh = SubResource("CapsuleMesh_fnvcv")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="PlayerBody" unique_id=952731459]
+transform = Transform3D(-4.304732e-08, -0.9932284, -0.11617805, 7.590404e-09, 0.11617805, -0.9932284, 1, -4.363765e-08, 2.5378506e-09, -0.7333464, 0.6609652, 0.11407596)
 mesh = SubResource("CapsuleMesh_fnvcv")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1251756589]
