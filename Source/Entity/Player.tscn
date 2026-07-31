@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cgcbm6kr3g40a"]
+[gd_scene format=3 uid="uid://ch2uynj0kh3ya"]
 
 [ext_resource type="Script" uid="uid://ctexpwm6fo676" path="res://addons/ArmaMovement/Components/Movement.cs" id="1_jrpmb"]
 [ext_resource type="Script" uid="uid://0dj2lgxt4kqk" path="res://addons/ArmaMovement/Components/PlayerHead.cs" id="1_k8pu1"]
@@ -57,7 +57,7 @@ Properties = PackedStringArray("rotation")
 
 [node name="PropertySynchronizer" parent="PlayerHead" unique_id=1476499998 node_paths=PackedStringArray("Target") instance=ExtResource("1_mp68b")]
 Target = NodePath("..")
-Properties = PackedStringArray("position", "rotation", "scale")
+Properties = PackedStringArray("position", "rotation")
 
 [node name="Movement" type="Node" parent="." unique_id=2090911000 node_paths=PackedStringArray("_playerHead", "_movementController", "_body")]
 script = ExtResource("1_jrpmb")

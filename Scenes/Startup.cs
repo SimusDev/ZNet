@@ -6,7 +6,10 @@ namespace ZNet.Scenes
     {
         public override void _Ready()
         {
+            // Do startup things, load assets and etc.
+            //
 
+            GetTree().CallDeferred("change_scene_to_file", "res://Scenes/World.tscn");
         }
 
         public static void LoadOrReloadGame()

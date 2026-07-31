@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnhjuc80aw1dh" path="res://Source/Interface/Main/Screens/MultiplayerScreen.cs" id="1_e4gv4"]
 
-[node name="MultiplayerScreen" type="Control" unique_id=1149304225]
+[node name="MultiplayerScreen" type="Control" unique_id=1149304225 node_paths=PackedStringArray("_buttons", "_addressLine")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,3 +10,37 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_e4gv4")
+_buttons = [NodePath("VBoxContainer/Connect")]
+_addressLine = NodePath("VBoxContainer/Server")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=572399396]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.187
+anchor_top = 0.187
+anchor_right = 0.81200004
+anchor_bottom = 0.81200004
+offset_left = 0.63998413
+offset_top = 0.3600006
+offset_right = 0.6398926
+offset_bottom = 0.35998535
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Server" type="LineEdit" parent="VBoxContainer" unique_id=498586833]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "localhost"
+placeholder_text = "Address"
+alignment = 1
+
+[node name="Connect" type="Button" parent="VBoxContainer" unique_id=1802476378]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Connect"
+
+[node name="Back" type="Button" parent="VBoxContainer" unique_id=829484153]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Back"
