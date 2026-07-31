@@ -2,11 +2,11 @@ using Godot;
 
 namespace ArmaMovement.Components
 {
-    [GlobalClass]
-    public partial class PlayerHead : Node3D
-    {
-        [Export] private Camera3D _camera;
-        public Camera3D Camera => _camera;
+	[GlobalClass]
+	public partial class PlayerHead : Node3D
+	{
+		[Export] private Camera3D _camera;
+		public Camera3D Camera => _camera;
 
         [Export] private Node3D _pitchPivot;
 
@@ -15,7 +15,6 @@ namespace ArmaMovement.Components
 
         private float _mouseSensitivity = 0.0f;
         private const float SENS_NORMALIZE = 0.005f;
-
 
         public override void _Ready()
         {
@@ -37,12 +36,12 @@ namespace ArmaMovement.Components
                 _pitchPivot.Rotation = pitchRot;
             }
 
-            if (@event is InputEventKey key && key.Pressed && key.Keycode == Key.Escape)
-            {
-                Input.MouseMode = Input.MouseMode == Input.MouseModeEnum.Captured
-                    ? Input.MouseModeEnum.Visible
-                    : Input.MouseModeEnum.Captured;
-            }
-        }
-    }
+			if (@event is InputEventKey key && key.Pressed && key.Keycode == Key.Escape)
+			{
+				Input.MouseMode = Input.MouseMode == Input.MouseModeEnum.Captured
+					? Input.MouseModeEnum.Visible
+					: Input.MouseModeEnum.Captured;
+			}
+		}
+	}
 }

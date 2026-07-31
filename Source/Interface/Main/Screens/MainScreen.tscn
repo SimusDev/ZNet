@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://uh3jbln2v0if" path="res://Source/Interface/Main/Screens/MainScreen.cs" id="1_tdwfv"]
 
-[node name="MainScreen" type="Control" unique_id=927799133]
+[node name="MainScreen" type="Control" unique_id=927799133 node_paths=PackedStringArray("_buttons")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,3 +10,39 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_tdwfv")
+_buttons = [NodePath("VBoxContainer/Quit")]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=511313711]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.187
+anchor_top = 0.187
+anchor_right = 0.81200004
+anchor_bottom = 0.81200004
+offset_left = 0.63998413
+offset_top = 0.3600006
+offset_right = 0.6398926
+offset_bottom = 0.35998535
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Server" type="Button" parent="VBoxContainer" unique_id=1495445812]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Start Server"
+
+[node name="Multiplayer" type="Button" parent="VBoxContainer" unique_id=1254560639]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Multiplayer"
+
+[node name="Settings" type="Button" parent="VBoxContainer" unique_id=1334839131]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+
+[node name="Quit" type="Button" parent="VBoxContainer" unique_id=1466941732]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Quit"
