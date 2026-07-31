@@ -6,6 +6,6 @@ namespace ArmaMovement.States.Movement {
         public virtual float Deceleration => 10.0f;
         public virtual float Friction => 1.0f;
         public virtual Godot.Vector3 HeadPosition => new(0.0f, 1.5f, 0.0f);
-        public virtual float TurnSpeed => 45.0f;
+        public virtual float TurnSpeed => 8.5f;
     }
 }

@@ -1,7 +1,7 @@
 namespace ArmaMovement.States.Movement {
     public class EasyRunning : Base
     {
-        public override float Speed => 3.0f;
+        public override float Speed => 4.0f;
 
     }
 }
