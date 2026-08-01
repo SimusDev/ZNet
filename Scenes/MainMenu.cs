@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 namespace ZNet.Scenes
@@ -8,6 +9,7 @@ namespace ZNet.Scenes
 		public override void _Ready()
 		{
 			ZNetMultiplayer.Instance.NetworkStatusChanged += OnNetworkStatusChanged;
+
 		}
 		private void OnNetworkStatusChanged(ZNetMultiplayer.NetworkStatus status)
 		{
