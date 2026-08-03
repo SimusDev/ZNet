@@ -12,6 +12,8 @@ namespace ZNet.Source.Interface.Main.Screens
 			{
 				button.Pressed += () => OnButtonPressed(button);
 			}
+
+			
 		}
 
 		private void OnButtonPressed(Button button)

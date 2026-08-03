@@ -6,6 +6,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include="addons\ZNet\Serialization\Serializers\" />
     <Folder Include="addons\ZNet\Singletons\" />
   </ItemGroup>
 </Project>

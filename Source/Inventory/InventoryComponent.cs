@@ -18,16 +18,18 @@ namespace ZNet.Source.Inventory
 			_rpc.Invoke(Send);
 		}
 
-		[RemoteFunc(RpcType.ToServer, Channel = (byte)Network.Channels.Inventory)]
+		[RemoteFunc(RpcType.ToServer, Channel = (byte)Network.Channels.Inventory, RunLocally = true)]
 		private void Send()
 		{
 			_rpc.InvokeId(_rpc.RemoteSenderId, Receive, _container);
+			GD.Print($"Syncing inventory to {_rpc.RemoteSenderId}...");
 		}
 
 		[RemoteFunc(Channel = (byte)Network.Channels.Inventory)]
 		private void Receive(SlotsContainer container)
 		{
 			_container = container;
+			GD.Print(_container);
 		}
 
 

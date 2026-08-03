@@ -308,15 +308,22 @@ public unsafe class BinaryReader : IDisposable
 
     // Godot
 
-    public T ReadSerializable<T>() where T : INetworkSerializable
+    public T ReadSerializableFullName<T>() where T : INetworkSerializable
     {
-        return (T)ReadSerializable();
+        return (T)ReadSerializableFullName();
     }
 
-    public INetworkSerializable ReadSerializable()
+    public INetworkSerializable ReadSerializableFullName()
     {
         var type = Type.GetType(ReadString());
         var result = (INetworkSerializable)Activator.CreateInstance(type);
+        result.NetworkDeserialize(this);
+        return result;
+    }
+    
+    public T ReadSerializable<T>() where T : INetworkSerializable, new()
+    {
+        var result = new T();
         result.NetworkDeserialize(this);
         return result;
     }

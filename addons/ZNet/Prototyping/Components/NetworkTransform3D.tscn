@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bpdean6s1m6or"]
+
+[ext_resource type="Script" uid="uid://dtai1kk27hfrl" path="res://addons/ZNet/Prototyping/Components/NetworkTransfrom3D.cs" id="1_rapta"]
+
+[node name="NetworkTransform3D" type="Node" unique_id=1421450987]
+script = ExtResource("1_rapta")

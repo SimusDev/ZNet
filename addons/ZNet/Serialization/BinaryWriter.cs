@@ -273,6 +273,11 @@ public unsafe class BinaryWriter : IDisposable
     // Godot
     public void WriteSerializable(INetworkSerializable value)
     {
+        value.NetworkSerialize(this);
+    }
+
+    public void WriteSerializableFullName(INetworkSerializable value)
+    {
         WriteString(value.GetType().FullName);
         value.NetworkSerialize(this);
     }

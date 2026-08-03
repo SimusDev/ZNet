@@ -18,8 +18,8 @@ namespace ZNet.Serialization
         static ObjectSerializer()
         {
             RegisterInterface<INetworkSerializable>(
-                writer: (w, v) => w.WriteSerializable(v),
-                reader: r => r.ReadSerializable()
+                writer: (w, v) => w.WriteSerializableFullName(v),
+                reader: r => r.ReadSerializableFullName()
             );
 
             Register<string>(

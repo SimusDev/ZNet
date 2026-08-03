@@ -3,10 +3,38 @@
 [ext_resource type="Script" uid="uid://ctexpwm6fo676" path="res://addons/ArmaMovement/Components/Movement.cs" id="1_jrpmb"]
 [ext_resource type="Script" uid="uid://0dj2lgxt4kqk" path="res://addons/ArmaMovement/Components/PlayerHead.cs" id="1_k8pu1"]
 [ext_resource type="PackedScene" uid="uid://h8ghkj0t620s" path="res://addons/ZNet/Prototyping/Components/PropertySynchronizer.tscn" id="1_mp68b"]
+[ext_resource type="PackedScene" uid="uid://dqvjt42n7o2j5" path="res://Source/Inventory/InventoryComponent.tscn" id="1_wpll3"]
+[ext_resource type="Script" uid="uid://cwe38ipf87m1k" path="res://Source/Inventory/Slot.cs" id="2_6ohgk"]
 [ext_resource type="Texture2D" uid="uid://bdxgmnjbvmn14" path="res://Textures/Prototype/Kenney/Light/texture_11.png" id="2_ib165"]
 [ext_resource type="Script" uid="uid://b32gkw1t08vdv" path="res://addons/ArmaMovement/Components/MovementController.cs" id="2_k8pu1"]
+[ext_resource type="Script" uid="uid://bb513lppe1joo" path="res://Source/Inventory/ItemStack.cs" id="3_6ohgk"]
+[ext_resource type="Script" uid="uid://dvi8jyswheuj5" path="res://Source/Inventory/SlotsContainer.cs" id="3_auorj"]
 [ext_resource type="Script" uid="uid://dcca23nr6fjdc" path="res://addons/ArmaMovement/Components/StateMachine.cs" id="3_dqyc2"]
 [ext_resource type="Texture2D" uid="uid://d16pos3q2eoum" path="res://Textures/Prototype/Kenney/Light/texture_07.png" id="5_dqyc2"]
+[ext_resource type="PackedScene" uid="uid://bpdean6s1m6or" path="res://addons/ZNet/Prototyping/Components/NetworkTransform3D.tscn" id="8_gjutx"]
+
+[sub_resource type="Resource" id="Resource_my8cf"]
+script = ExtResource("3_6ohgk")
+metadata/_custom_type_script = "uid://bb513lppe1joo"
+
+[sub_resource type="Resource" id="Resource_xanlq"]
+script = ExtResource("2_6ohgk")
+_itemStack = SubResource("Resource_my8cf")
+metadata/_custom_type_script = "uid://cwe38ipf87m1k"
+
+[sub_resource type="Resource" id="Resource_e6447"]
+script = ExtResource("3_6ohgk")
+metadata/_custom_type_script = "uid://bb513lppe1joo"
+
+[sub_resource type="Resource" id="Resource_w2s7u"]
+script = ExtResource("2_6ohgk")
+_itemStack = SubResource("Resource_e6447")
+metadata/_custom_type_script = "uid://cwe38ipf87m1k"
+
+[sub_resource type="Resource" id="Resource_lmafn"]
+script = ExtResource("3_auorj")
+_slots = Array[ExtResource("2_6ohgk")]([SubResource("Resource_xanlq"), SubResource("Resource_w2s7u")])
+metadata/_custom_type_script = "uid://dvi8jyswheuj5"
 
 [sub_resource type="SphereMesh" id="SphereMesh_sx3cy"]
 
@@ -33,10 +61,15 @@ height = 0.8947754
 
 [node name="Player" type="CharacterBody3D" unique_id=1399258395]
 
+[node name="InventoryComponent" parent="." unique_id=131141136 instance=ExtResource("1_wpll3")]
+_container = SubResource("Resource_lmafn")
+
+[node name="NetworkTransform3D" parent="." unique_id=1421450987 node_paths=PackedStringArray("Target") instance=ExtResource("8_gjutx")]
+Target = NodePath("..")
+
 [node name="PropertySynchronizer" parent="." unique_id=955401790 node_paths=PackedStringArray("Target") instance=ExtResource("1_mp68b")]
 Target = NodePath("..")
-Properties = PackedStringArray("position", "velocity", "rotation", "scale")
-TickRate = 48.0
+Properties = PackedStringArray("velocity")
 
 [node name="PlayerHead" type="Node3D" parent="." unique_id=1875924925 node_paths=PackedStringArray("_camera", "_pitchPivot", "_characterBody")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
@@ -46,21 +79,17 @@ _pitchPivot = NodePath("MeshInstance3D")
 _characterBody = NodePath("..")
 metadata/_custom_type_script = "uid://0dj2lgxt4kqk"
 
+[node name="NetworkTransform3D" parent="PlayerHead" unique_id=714674117 node_paths=PackedStringArray("Target") instance=ExtResource("8_gjutx")]
+Target = NodePath("..")
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="PlayerHead" unique_id=1906180084]
 mesh = SubResource("SphereMesh_sx3cy")
 surface_material_override/0 = SubResource("StandardMaterial3D_k8pu1")
 
 [node name="Camera3D" type="Camera3D" parent="PlayerHead/MeshInstance3D" unique_id=1603356606]
 
-[node name="PropertySynchronizer" parent="PlayerHead/MeshInstance3D" unique_id=1720145056 node_paths=PackedStringArray("Target") instance=ExtResource("1_mp68b")]
+[node name="NetworkTransform3D" parent="PlayerHead/MeshInstance3D" unique_id=1897207323 node_paths=PackedStringArray("Target") instance=ExtResource("8_gjutx")]
 Target = NodePath("..")
-Properties = PackedStringArray("rotation")
-TickRate = 48.0
-
-[node name="PropertySynchronizer" parent="PlayerHead" unique_id=1476499998 node_paths=PackedStringArray("Target") instance=ExtResource("1_mp68b")]
-Target = NodePath("..")
-Properties = PackedStringArray("position", "rotation")
-TickRate = 48.0
 
 [node name="Movement" type="Node" parent="." unique_id=2090911000 node_paths=PackedStringArray("_playerHead", "_movementController", "_body")]
 script = ExtResource("1_jrpmb")
@@ -94,10 +123,8 @@ mesh = SubResource("CapsuleMesh_fnvcv")
 transform = Transform3D(-4.304732e-08, -0.9932284, -0.11617805, 7.590404e-09, 0.11617805, -0.9932284, 1, -4.363765e-08, 2.5378506e-09, -0.7333464, 0.6609652, 0.11407596)
 mesh = SubResource("CapsuleMesh_fnvcv")
 
-[node name="PropertySynchronizer" parent="PlayerBody" unique_id=954066535 node_paths=PackedStringArray("Target") instance=ExtResource("1_mp68b")]
+[node name="NetworkTransform3D" parent="PlayerBody" unique_id=1043366026 node_paths=PackedStringArray("Target") instance=ExtResource("8_gjutx")]
 Target = NodePath("..")
-Properties = PackedStringArray("rotation")
-TickRate = 48.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1251756589]
 shape = SubResource("CapsuleShape3D_fnvcv")

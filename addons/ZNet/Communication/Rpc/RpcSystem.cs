@@ -155,7 +155,7 @@ namespace ZNet.Communication.Rpc
 		{
 			bool validation = ValidateRpc(config, peer, authority);
 			if (!validation)
-				GD.PushError($"Rpc {method.Method.Name} Validation Failed for peer {peer}, {config.RpcType.ToString()}");
+				GD.PushError($"Rpc {method.Method.Name} Validation Failed for peer {peer}, auth {authority}, {config.RpcType.ToString()}");
 			return validation;
 		}
 
@@ -382,7 +382,16 @@ namespace ZNet.Communication.Rpc
 			InvokeInternal(method, _tempArgs, 0);
 		}
 
-		public void Invoke(Delegate method, params object[] args)
+        public void Invoke(Delegate method, byte[] bytes)
+        {
+            if (!HasObserversOrClient())
+                return;
+
+            _tempArgs[0] = bytes;
+            InvokeInternal(method, _tempArgs, 1);
+        }
+
+        public void Invoke(Delegate method, params object[] args)
 		{
 			if (!HasObserversOrClient())
 				return;
@@ -432,26 +441,41 @@ namespace ZNet.Communication.Rpc
 			InvokeInternal(method, _tempArgs, 4);
 		}
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void InvokeIdInternal(int peerId, Delegate method, object[] args, int argsLength)
+		{
+            if (peerId == _api.UniqueId)
+            {
+                InvokeLocally(method, args, argsLength);
+            }
+
+            ushort rpcId = _delegateToId[method];
+            RpcConfig config = _idToConfig[rpcId];
+            _writerSend.Reset();
+            SerializePacketTypeAndHashId(_writerSend);
+            SerializeRpc(_writerSend, rpcId, args, argsLength);
+            var data = _writerSend.GetSpan();
+            _api.SendTo(peerId, data, config.Channel, (ZNetMultiplayer.SendMode)config.SendMode);
+        }
+
 		public void InvokeId(int peerId, Delegate method, params object[] args)
 		{
 			if (!CanInvokeById()) { return; }
 			if (!IsContainsDelegate(method)) { return; }
 
-			if (peerId == _api.UniqueId)
-			{
-				InvokeLocally(method, args, args.Length);
-			}
-
-			ushort rpcId = _delegateToId[method];
-			RpcConfig config = _idToConfig[rpcId];
-			_writerSend.Reset();
-			SerializePacketTypeAndHashId(_writerSend);
-			SerializeRpc(_writerSend, rpcId, args, args.Length);
-			var data = _writerSend.GetSpan();
-			_api.SendTo(peerId, data, config.Channel, (ZNetMultiplayer.SendMode)config.SendMode);
+			InvokeIdInternal(peerId, method, args, args.Length);
 		}
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void InvokeId(int peerId, Delegate method, byte[] bytes)
+        {
+            if (!CanInvokeById()) { return; }
+            if (!IsContainsDelegate(method)) { return; }
+
+			_tempArgs[0] = bytes;
+            InvokeIdInternal(peerId, method, _tempArgs, 1);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		internal bool CanInvokeById()
 		{
 			if (_api.IsServer)
@@ -486,7 +510,16 @@ namespace ZNet.Communication.Rpc
 			InvokeIdArrayInternal(peers, method, _tempArgs, 0);
 		}
 
-		public void InvokeIdArray(int[] peers, Delegate method, params object[] args)
+        public void InvokeIdArray(int[] peers, Delegate method, byte[] bytes)
+        {
+            if (!CanInvokeById()) { return; }
+            if (!IsContainsDelegate(method)) { return; }
+
+			_tempArgs[0] = bytes;
+            InvokeIdArrayInternal(peers, method, _tempArgs, 1);
+        }
+
+        public void InvokeIdArray(int[] peers, Delegate method, params object[] args)
 		{
 			if (!CanInvokeById()) { return; }
 			if (!IsContainsDelegate(method)) { return; }
